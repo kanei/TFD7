@@ -45,7 +45,16 @@ class TFD_Environment extends Twig_Environment
      */
     public function getTemplateClass($name, $index = null)
     {
-        return str_replace(array('-', '.', '/'), "_", $this->generateCacheKeyByName($name));
+        $cls = &drupal_static(__METHOD__ . $name);
+
+        if (!isset($cls)) {
+            $pattern = '/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/';
+            preg_match_all($pattern, $this->generateCacheKeyByName($name), $matches);
+
+            $cls = implode('_', $matches[0]);
+        }
+
+        return $cls;
     }
 
     public function loadTemplate($name, $index = null)
