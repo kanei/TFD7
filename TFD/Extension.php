@@ -323,7 +323,7 @@ function tfd_image_url($filepath, $preset = NULL) {
     return image_style_url($preset, $filepath);
   }
   else {
-    return $filepath;
+    return drupal_realpath($filepath);
   }
 }
 
